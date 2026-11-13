@@ -1,0 +1,19 @@
+{
+  "name": "Sacha Wayra - Wayra Experience",
+  "short_name": "Sacha Wayra",
+  "description": "App de misiones turísticas en los Yungas de La Paz, Bolivia",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8F7F2",
+  "theme_color": "#2D4F3E",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "icono-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

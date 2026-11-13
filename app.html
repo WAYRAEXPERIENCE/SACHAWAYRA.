@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sacha Wayra</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--fondo:#F8F7F2;--primario:#2D4F3E;--secundario:#5A8259;--terracota:#C86D51;--dorado:#E5A93C;--texto:#1E2421}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sans',sans-serif;background:var(--fondo);color:var(--texto);max-width:480px;margin:0 auto;padding-bottom:40px}
+h1,h2,h3{font-family:'Poppins',sans-serif;font-weight:700}
+.header{background:var(--primario);color:#fff;padding:24px 20px 28px;border-radius:0 0 20px 20px}
+.logo{font-size:13px;letter-spacing:2px;text-transform:uppercase;opacity:.85;margin-bottom:6px}
+.header h1{font-size:28px;margin-bottom:4px}
+.saludo{font-size:15px;opacity:.9}
+.progreso-wrap{margin-top:18px}
+.progreso-label{font-size:12px;display:flex;justify-content:space-between;margin-bottom:6px;opacity:.9}
+.barra{background:rgba(255,255,255,.25);height:10px;border-radius:20px;overflow:hidden}
+.barra-fill{background:var(--dorado);height:100%;width:0%;border-radius:20px;transition:width .4s}
+.aviso{background:#F3D9CF;border-left:5px solid var(--terracota);margin:18px 20px;padding:14px 16px;border-radius:14px;font-size:13.5px;line-height:1.5}
+.aviso strong{color:var(--terracota)}
+.seccion{padding:0 20px;margin-top:22px}
+.seccion h2{font-size:18px;color:var(--primario);margin-bottom:12px}
+.paquetes{display:flex;flex-direction:column;gap:12px}
+.paquete{background:#fff;border:2px solid #E4E2D8;border-radius:20px;padding:16px;cursor:pointer;transition:.2s;display:flex;gap:14px;align-items:center}
+.paquete.activo{border-color:var(--secundario);background:#EFF4EE}
+.paquete .icono{font-size:26px}
+.paquete .info strong{display:block;font-family:'Poppins';font-size:15px;color:var(--primario)}
+.paquete .info span{font-size:12.5px;color:#5c635e}
+.misiones{display:none;flex-direction:column;gap:16px;margin-top:14px}
+.misiones.visible{display:flex}
+.mision{background:#fff;border-radius:20px;padding:18px;box-shadow:0 2px 10px rgba(45,79,62,.07);border-top:5px solid var(--secundario)}
+.mision.bloqueada{opacity:.55;border-top-color:#C9C7BC}
+.mision h3{font-size:16px;color:var(--primario);margin-bottom:8px}
+.historia{font-size:13.5px;line-height:1.55;color:#3d453f;margin-bottom:10px}
+.reto{background:#F1F5EF;border-radius:14px;padding:12px;font-size:13.5px;line-height:1.5;margin-bottom:14px}
+.reto strong{color:var(--secundario)}
+.trivia{margin-bottom:12px}
+.trivia p{font-size:13.5px;font-weight:600;margin-bottom:8px}
+.opciones{display:flex;flex-direction:column;gap:8px}
+.opcion{background:#F8F7F2;border:2px solid #E4E2D8;border-radius:14px;padding:11px 13px;font-size:13px;cursor:pointer}
+.opcion.correcta{background:#DDEBD9;border-color:var(--secundario);color:var(--primario);font-weight:600}
+.opcion.incorrecta{background:#F6DCD4;border-color:var(--terracota);color:#8a3d28}
+.opcion.deshabilitada{pointer-events:none;opacity:.7}
+.recompensa{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,#FBEBD0,#F7E3BF);border-radius:14px;padding:12px 14px;font-size:13px;font-weight:600;color:#7a5a15}
+.insignia{background:var(--dorado);color:#fff;padding:5px 10px;border-radius:20px;font-size:11.5px}
+.puntos-badge{display:inline-block;background:var(--terracota);color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;margin-top:10px}
+.insignias-lista{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.insignias-lista span{background:var(--secundario);color:#fff;padding:6px 12px;border-radius:20px;font-size:11.5px;font-weight:600}
+.vacio{font-size:13px;color:#7a817c;font-style:italic}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">Wayra Experience</div>
+  <h1>Sacha Wayra</h1>
+  <p class="saludo">¡Hola, Explorador! 🌿</p>
+  <div class="progreso-wrap">
+    <div class="progreso-label"><span>Tu progreso</span><span id="progresoTxt">0%</span></div>
+    <div class="barra"><div class="barra-fill" id="barraFill"></div></div>
+  </div>
+  <div id="puntosBadge" class="puntos-badge">0 puntos</div>
+</div>
+<div class="aviso"><strong>Modo Ruta Sin Señal:</strong> Carga esta página antes de salir de La Paz. Escanea los códigos QR en cada parada para desbloquear tus retos sin internet.</div>
+<div class="seccion">
+  <h2>1. Elegí tu paquete</h2>
+  <div class="paquetes">
+    <div class="paquete" data-paquete="A"><div class="icono">🌱</div><div class="info"><strong>Paquete Vivencial</strong><span>Cultura y Cosecha</span></div></div>
+    <div class="paquete" data-paquete="B"><div class="icono">🥁</div><div class="info"><strong>Paquete Cultural y Ritmo</strong><span>Saya afroboliviana</span></div></div>
+    <div class="paquete" data-paquete="C"><div class="icono">🏞️</div><div class="info"><strong>Paquete Naturaleza y Trekking</strong><span>Bosque Nuboso</span></div></div>
+  </div>
+</div>
+<div class="seccion">
+  <h2>2. Tus misiones</h2>
+  <div id="misionesA" class="misiones"></div>
+  <div id="misionesB" class="misiones"></div>
+  <div id="misionesC" class="misiones"></div>
+  <p id="msgElegir" class="vacio">Elegí un paquete arriba para ver tus misiones.</p>
+</div>
+<div class="seccion" id="seccionInsignias" style="display:none">
+  <h2>Tus insignias</h2>
+  <div id="insigniasLista" class="insignias-lista"></div>
+</div>
+<script>
+const PAQUETES={A:{misiones:[
+{id:"A1",titulo:"El Secreto de la Hoja Verde",historia:"La coca se cosecha a mano y el acullicu es un símbolo de respeto y energía.",reto:"Pide a tu anfitrión que te enseñe a desprender la hoja y llena tu mitiña.",trivias:[{p:"¿Cómo se llama el masticado tradicional?",o:["Apthapi","Acullicu","Ch'alla"],c:1},{p:"¿Por qué se cosecha a mano?",o:["Por falta de máquinas","Para no dañar los brotes y cuidar la planta","Para cambiar de color"],c:1}],puntos:100,insignia:"Cosechador Novato"},
+{id:"A2",titulo:"El Valor de la Tierra",historia:"La tierra en los Yungas es vida y herencia familiar.",reto:"Conversá con tu anfitrión sobre qué cultivos siembra y por qué los elige.",trivias:[{p:"¿Qué significa cuidar la tierra?",o:["Solo producir más","Respetar los ciclos y heredar a futuras generaciones","Vender rápido"],c:1},{p:"¿Cuál es un cultivo tradicional de los Yungas?",o:["Café y coca","Trigo y cebada","Uva de mesa"],c:0}],puntos:100,insignia:"Guardián de la Tierra"},
+{id:"A3",titulo:"De la Parcela a la Mesa",historia:"La comida yungueña nace de la parcela: plátano, yuca, café y cítricos.",reto:"Probá un plato típico y anotá sus ingredientes.",trivias:[{p:"¿Qué producto es típico de los Yungas?",o:["Plátano y yuca","Quinua y papa","Maíz morado"],c:0},{p:"¿Por qué es importante comer local?",o:["Es más caro","Apoya a las familias y reduce el impacto ambiental","Es más rápido"],c:1}],puntos:100,insignia:"Sembrador de Sabores"}]},
+B:{misiones:[
+{id:"B1",titulo:"Ritmo y Raíces Afrobolivianas",historia:"La Saya es memoria y resistencia viva del pueblo afroboliviano en los Yungas.",reto:"Aprende el paso básico de la Saya y anímate a tocar un instrumento.",trivias:[{p:"¿Qué instrumento de caña con ranuras raspa con un palito?",o:["Charango","Cuancha","Zampoña"],c:1},{p:"¿Qué hacen las coplas?",o:["Solo calientan la voz","Narran la historia y costumbres de la comunidad","Se cantan en silencio"],c:1}],puntos:100,insignia:"Guardián del Ritmo"},
+{id:"B2",titulo:"Memoria Ancestral en Canto",historia:"Las coplas transmiten historias de generación en generación.",reto:"Escuchá una copla completa y contá qué historia cuenta.",trivias:[{p:"¿Cómo se transmiten las coplas?",o:["Por escrito","De generación en generación oralmente","Solo por radio"],c:1},{p:"¿Qué expresan las coplas?",o:["Alegría sin mensaje","Historia, dolor y resistencia","Solo música"],c:1}],puntos:100,insignia:"Voz de la Memoria"},
+{id:"B3",titulo:"Herencia Viva",historia:"La cultura afroboliviana es patrimonio vivo: música, danza, gastronomía.",reto:"Compartí con tu grupo algo que aprendiste.",trivias:[{p:"¿Dónde se asienta el pueblo afroboliviano?",o:["En los Yungas de La Paz","En el altiplano","En el oriente"],c:0},{p:"¿Qué es la Saya?",o:["Una comida","Una danza y expresión cultural","Un instrumento"],c:1}],puntos:100,insignia:"Heredero Cultural"}]},
+C:{misiones:[
+{id:"C1",titulo:"Ojos en el Bosque Nuboso",historia:"Los Yungas unen los Andes con la Amazonía albergando bosques nubosos.",reto:"Cruza el puente colgante, escucha el bosque y toma una foto panorámica.",trivias:[{p:"¿Cómo es la geografía yungueña?",o:["Desierto seco","Zona de transición con bosques nubosos y valles","Nieve eterna"],c:1},{p:"¿Cuál es la regla de oro del explorador?",o:["No dejar rastro ni arrancar plantas","Salir del sendero","Alimentar animales"],c:0}],puntos:100,insignia:"Explorador de Miradores"},
+{id:"C2",titulo:"Secretos de la Biodiversidad",historia:"Los Yungas son hogar de aves, mariposas, orquídeas y mamíferos únicos.",reto:"Identificá al menos 3 especies durante el sendero.",trivias:[{p:"¿Qué tipo de bosque predomina en los Yungas?",o:["Bosque nuboso","Bosque seco","Sabana"],c:0},{p:"¿Por qué es importante la biodiversidad?",o:["Solo por belleza","Mantiene el equilibrio del ecosistema","No es importante"],c:1}],puntos:100,insignia:"Observador de Vida"},
+{id:"C3",titulo:"Guardián del Paisaje",historia:"Cuidar el paisaje yungueño es tarea de todos.",reto:"Recogé al menos un residuo del sendero.",trivias:[{p:"¿Qué acción ayuda a conservar el bosque?",o:["Dejar basura","No dejar rastro y no arrancar plantas","Encender fuego"],c:1},{p:"¿Quién debe cuidar el paisaje?",o:["Solo los guardaparques","Solo los turistas","Turistas y comunidades juntos"],c:2}],puntos:100,insignia:"Espíritu Sacha Wayra"}]}};
+let estado=JSON.parse(localStorage.getItem("sachaWayra")||"{}");
+if(!estado.puntos)estado.puntos=0;if(!estado.insignias)estado.insignias=[];if(!estado.completadas)estado.completadas=[];if(!estado.paquete)estado.paquete=null;
+function guardar(){localStorage.setItem("sachaWayra",JSON.stringify(estado))}
+function renderMisiones(){["A","B","C"].forEach(p=>{const cont=document.getElementById("misiones"+p);cont.innerHTML="";PAQUETES[p].misiones.forEach(m=>cont.appendChild(crearMision(m)))})}
+function crearMision(m){const div=document.createElement("div");div.className="mision";const completada=estado.completadas.includes(m.id);if(completada)div.classList.add("bloqueada");let html=`<h3>${completada?"✅ ":""}${m.titulo}</h3><p class="historia">${m.historia}</p><div class="reto"><strong>Reto:</strong> ${m.reto}</div>`;m.trivias.forEach((t,ti)=>{html+=`<div class="trivia"><p>${t.p}</p><div class="opciones">`;t.o.forEach((op,oi)=>{html+=`<div class="opcion" data-opcion="${oi}" data-correcta="${t.c}">${op}</div>`});html+=`</div></div>`});html+=`<div class="recompensa"><span>+${m.puntos} puntos</span><span class="insignia">${m.insignia}</span></div>`;div.innerHTML=html;if(completada){div.querySelectorAll(".opcion").forEach(o=>o.classList.add("deshabilitada"))}else{div.querySelectorAll(".opcion").forEach(o=>o.addEventListener("click",()=>responder(o,m)))}return div}
+function responder(el,m){if(estado.completadas.includes(m.id))return;const opcion=parseInt(el.dataset.opcion);const correcta=parseInt(el.dataset.correcta);const padre=el.parentElement;if(padre.dataset.respondida)return;padre.dataset.respondida="1";padre.querySelectorAll(".opcion").forEach(o=>o.classList.add("deshabilitada"));if(opcion===correcta){el.classList.add("correcta")}else{el.classList.add("incorrecta");padre.querySelector(`.opcion[data-opcion="${correcta}"]`).classList.add("correcta")}const misionDiv=el.closest(".mision");const total=misionDiv.querySelectorAll(".trivia").length;const hechas=misionDiv.querySelectorAll(".opciones[data-respondida='1']").length;if(hechas>=total)completarMision(m)}
+function completarMision(m){if(estado.completadas.includes(m.id))return;estado.completadas.push(m.id);estado.puntos+=m.puntos;if(!estado.insignias.includes(m.insignia))estado.insignias.push(m.insignia);guardar();actualizarUI()}
+function actualizarUI(){const total=9;const pct=Math.round((estado.completadas.length/total)*100);document.getElementById("barraFill").style.width=pct+"%";document.getElementById("progresoTxt").textContent=pct+"%";document.getElementById("puntosBadge").textContent=estado.puntos+" puntos";const sec=document.getElementById("seccionInsignias");const lista=document.getElementById("insigniasLista");if(estado.insignias.length){sec.style.display="block";lista.innerHTML=estado.insignias.map(i=>`<span>🏅 ${i}</span>`).join("")}else{sec.style.display="none"}renderMisiones()}
+document.querySelectorAll(".paquete").forEach(p=>{p.addEventListener("click",()=>{document.querySelectorAll(".paquete").forEach(x=>x.classList.remove("activo"));p.classList.add("activo");const id=p.dataset.paquete;estado.paquete=id;guardar();["A","B","C"].forEach(k=>document.getElementById("misiones"+k).classList.toggle("visible",k===id));document.getElementById("msgElegir").style.display="none"})});
+renderMisiones();if(estado.paquete){const p=document.querySelector(`.paquete[data-paquete="${estado.paquete}"]`);if(p)p.click()}actualizarUI();
+</script>
+</body>
+</html>
